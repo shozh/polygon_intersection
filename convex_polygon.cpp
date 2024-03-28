@@ -8,7 +8,7 @@ ConvexPolygon::ConvexPolygon(const ConvexPolygon& other) {
 	n = other.n;
 }
 
-	ConvexPolygon::ConvexPolygon(std::vector<r>& rs) {
+ConvexPolygon::ConvexPolygon(std::vector<r>& rs) {
 
 	sort(rs.begin(), rs.end());
 
@@ -88,18 +88,27 @@ ConvexPolygon::ConvexPolygon(const ConvexPolygon& other) {
 
 	std::vector<r> temp_vec = {real_preprepreprev, preprev, prev, last};
 
-	for (r temp: temp_vec) {
+	for (auto it = temp_vec.begin(); it != temp_vec.end(); ++it) {
+        r temp = *it;
+        if (temp == real_preprepreprev)
+            continue;
 		line l(temp, real_prepreprev);
-		PointLinePosition plps[4];
+		PointLinePosition plps[3];
 		size_t i = 0;
 		for (r remp: temp_vec)
-			plps[i++] = l.findPointPosition(remp);
+            if (remp != temp)
+			    plps[i++] = l.findPointPosition(remp);
 
-		if (plps[0] == plps[1] && plps[1] == plps[2] && plps[2] == plps[3]) {
-			r real_preprev = temp;
+		if (plps[0] == plps[1] && plps[1] == plps[2]) {
+            temp_vec.erase(it);
+			real_preprev = temp;
 			break;
 		}
 	}
+
+
+    prev = temp_vec[1];
+    last = temp_vec[2];
 
 	line l(real_preprev, prev);
 
