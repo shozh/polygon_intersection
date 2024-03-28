@@ -24,15 +24,14 @@ r IntersectedPoint(line l, line w) {
 	return {x, y};
 }
 
-TripletOrientation orientation(r p, r q, r t) 
-{ 
-	double val = (q.y - p.y) * (t.x - q.x) - (q.x - p.x) * (t.y - q.y);
+TripletOrientation orientation(r a, r b, r c) {
+	double val = (b - a) ^ (c - b);
 
 	if (floatCom::eq(val, 0))
 		return TripletOrientation::collinear;
 	if (val > 0)
-		return TripletOrientation::clockwise;
-	return TripletOrientation::counterclockwise;
+		return TripletOrientation::counterclockwise;
+	return TripletOrientation::clockwise;
 } 
 
 bool IsPointOnSeg(seg s, r p) {

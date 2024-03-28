@@ -24,9 +24,9 @@ struct line {
 
 	line(double a, double b, double c);
 
-	line(r a, r b);
+	line(r p, r q);
 
-	line(seg s);
+	explicit line(seg s);
 
 	PointLinePosition findPointPosition(r p);
 };
@@ -43,7 +43,7 @@ bool IsIntersected(seg s, seg t);
 r IntersectedPoint(seg s, seg t);
 
 
-TripletOrientation orientation(r p, r q, r t);
+TripletOrientation orientation(r a, r b, r c);
 
 bool IsPointOnSeg(seg s, r p);
 bool IsSegOnSeg(seg s, seg t);

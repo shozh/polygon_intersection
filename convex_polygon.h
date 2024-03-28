@@ -20,7 +20,7 @@ struct ConvexPolygon {
 	ConvexPolygon(std::vector<r>& rs);
 	//ConvexPolygon(std::initializer_list<r> rlist);
 
-	//PointPolygonPosition findPointPosition(r p);
+	PointPolygonPosition findPointPosition(r p);
 
 	double area();
 };

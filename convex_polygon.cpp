@@ -1,7 +1,7 @@
 #include "convex_polygon.h"
 #include <algorithm>
 #include <set>
-
+#include <cmath>
 
 ConvexPolygon::ConvexPolygon(const ConvexPolygon& other) {
 	vertices = other.vertices;
@@ -50,21 +50,19 @@ ConvexPolygon::ConvexPolygon(std::vector<r>& rs) {
 	std::vector<r> nexts(++rs.begin(), rs.end());
 
 	order[0] = *rs.begin();
-	size_t chosen = 1;
 
 	for (int i = 1; i < rs.size() - 3; ++i) {
-		chosen++;
 		for (auto it = nexts.begin(); it != nexts.end(); ++it) {
 			r next = *it;
 			line l(order[i-1], next);
-			PointLinePosition plps[rs.size() - chosen];
+			PointLinePosition plps[rs.size() - 2];
 			size_t j = 0;
-			for (r p: nexts)
-				if (p != next)
+			for (r p: rs)
+				if (p != next && p != order[i-1])
 					plps[j++] = l.findPointPosition(p);
-			
+
 			bool flag = true;
-			for (size_t k = 1; k < rs.size() - chosen; ++k)
+			for (size_t k = 1; k < rs.size() - 2; ++k)
 				if (plps[0] != plps[k]) {
 					flag = false;
 					break;
@@ -72,8 +70,9 @@ ConvexPolygon::ConvexPolygon(std::vector<r>& rs) {
 			if (flag) {
 				order[i] = next;
 				nexts.erase(it);
+                break;
 			}	
-		}		
+		}
 	}
 
 	r real_preprepreprev = order[rs.size()-5];
@@ -132,13 +131,57 @@ ConvexPolygon::ConvexPolygon(std::vector<r>& rs) {
 //ConvexPolygon::ConvexPolygon(std::initializer_list<r> rlist) {}
 
 
-//PointPolygonPosition ConvexPolygon::findPointPosition(r p) {}
+PointPolygonPosition ConvexPolygon::findPointPosition(r p) {
+
+    // Point case
+    if (n == 1) {
+        if (vertices[0] == p)
+            return PointPolygonPosition::on;
+        else
+            return PointPolygonPosition::outside;
+    }
+
+    // Segment case
+    if (n == 2) {
+        seg t(vertices[0], vertices[1]);
+
+        if (IsPointOnSeg(t, p))
+            return PointPolygonPosition::on;
+        else
+            return PointPolygonPosition::outside;
+    }
+
+    TripletOrientation o1 = orientation(vertices[0], vertices[1], p);
+    if (IsPointOnSeg(seg(vertices[0], vertices[1]), p))
+        return PointPolygonPosition::on;
+
+
+    for (size_t i = 2; i != n; ++i) {
+        seg s(vertices[i-1], vertices[i]);
+        if (IsPointOnSeg(s, p))
+            return PointPolygonPosition::on;
+        TripletOrientation o = orientation(vertices[i-1], vertices[i], p);
+
+        if (o != o1)
+            return PointPolygonPosition::outside;
+        }
+
+
+    TripletOrientation on = orientation(vertices[n-1], vertices[0], p);
+    if (IsPointOnSeg(seg(vertices[n-1], vertices[0]), p))
+        return PointPolygonPosition::on;
+
+    if (o1 != on)
+        return PointPolygonPosition::outside;
+    
+    return PointPolygonPosition::inside;
+}
 
 double ConvexPolygon::area() {
 	double s = 0;
 	for (size_t i = 0; i != n; ++i)
 		s += vertices[i] ^ vertices[(i + 1) % n];
-	return abs(s) / 2;
+	return fabs(s) / 2.;
 }
 
 //ConvexPolygon& intersect(const ConvexPolygon& T, const ConvexPolygon& Y);
