@@ -7,17 +7,25 @@
 #include "r.h"
 #include "segline.h"
 
+enum class PointPolygonPosition {
+	outside, inside, on
+};
+
+
 struct ConvexPolygon {
-	uint32_t n;
+	size_t n;
 	std::vector<r> vertices;
 
 	ConvexPolygon(const ConvexPolygon& other);
 	ConvexPolygon(const std::vector<r>& rs);
 	ConvexPolygon(std::initializer_list<r> rlist);
 
+	PointPolygonPosition findPointPosition(r p);
+
+	double area();
 };
 
-ConvexPolygon intersect(ConvexPolygon T, ConvexPolygon Y);
+ConvexPolygon& intersect(const ConvexPolygon& T, const ConvexPolygon& Y);
 
 
 #endif // __CONVEX_POLYGON_H__

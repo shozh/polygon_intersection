@@ -7,6 +7,8 @@ struct seg {
 	r p, q;
 
 	seg(r a, r b);
+
+	double len();
 };
 
 struct line {
@@ -15,15 +17,20 @@ struct line {
 	line(double a, double b, double c);
 
 	line(r a, r b);
+
+	line(seg s);
 };
 
-bool is_intersected(seg s, seg t);
-//bool is_intersected(line l, line w);
+bool IsIntersected(line l, line w);
+r IntersectedPoint(line l, line w);
+
+
+bool IsIntersected(seg s, seg t);
+r IntersectedPoint(seg s, seg t);
 
 
 
-r intersection_point(seg s, seg t);
-//r intersection_point(line l, line w);
+
 
 
 #endif // __SEGLINE_H__
