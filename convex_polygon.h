@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <cstdint>
-#include <initializer_list>
+//#include <initializer_list>
 #include "r.h"
 #include "segline.h"
 
@@ -17,15 +17,15 @@ struct ConvexPolygon {
 	std::vector<r> vertices;
 
 	ConvexPolygon(const ConvexPolygon& other);
-	ConvexPolygon(const std::vector<r>& rs);
-	ConvexPolygon(std::initializer_list<r> rlist);
+	ConvexPolygon(std::vector<r>& rs);
+	//ConvexPolygon(std::initializer_list<r> rlist);
 
-	PointPolygonPosition findPointPosition(r p);
+	//PointPolygonPosition findPointPosition(r p);
 
 	double area();
 };
 
-ConvexPolygon& intersect(const ConvexPolygon& T, const ConvexPolygon& Y);
+//ConvexPolygon& intersect(const ConvexPolygon& T, const ConvexPolygon& Y);
 
 
 #endif // __CONVEX_POLYGON_H__

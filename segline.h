@@ -1,7 +1,7 @@
 #ifndef __SEGLINE_H__
 #define __SEGLINE_H__
 
-#include <r.h>
+#include "r.h"
 
 enum class TripletOrientation {
 	collinear, clockwise, counterclockwise

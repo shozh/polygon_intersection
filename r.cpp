@@ -1,6 +1,6 @@
 #include "r.h"
-#include <iostream>
 #include "utils.h"
+#include <iostream>
 #include <cmath>
 
 
@@ -29,11 +29,11 @@ bool operator!= (r a, r b) {
 }
 
 bool operator< (r a, r b) {
-	return (a.x < b.x) && (a.y < b. y);
+	return ((a.x < b.x) && (a.y < b. y)) || (a.x < b.x);
 }
 
 bool operator> (r a, r b) {
-	return (a.x > b.x) && (a.y > b. y);
+	return ((a.x > b.x) && (a.y > b. y)) || (a.x > b.x);
 }
 
 bool operator<= (r a, r b) {
