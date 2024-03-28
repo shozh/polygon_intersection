@@ -7,6 +7,10 @@
 r::r() {}
 r::r(double x, double y): x(x), y(y) {}
 
+void r::set(double x, double y) {
+	this->x = x;
+	this->y = y;
+}
 
 double r::len() {
 	return hypot(x, y);
@@ -41,26 +45,54 @@ bool operator>= (r a, r b) {
 }
 
 r operator+ (r a) {
-
+	return a;
 }
 
 r operator- (r a) {
-	
+	return {-a.x, -a.y};
 }
 
-r operator+ (r a, r b);
-r operator- (r a, r b);
+r operator+ (r a, r b) {
+	return {a.x + b.x, a.y + b.y};
+}
 
-r operator* (double x, r a);
-r operator/ (r a, double x);
+r operator- (r a, r b) {
+	return {a.x - b.x, a.y - b.y};
+}
 
-double operator* (r a, r b);
-double operator^ (r a, r b);
+r operator* (double x, r a) {
+	return {x * a.x, x * a.y};
+}
 
-bool operator|| (r a, r b);
-bool codirected(r a, r b);
-bool oppdirected(r a, r b);
+r operator/ (r a, double x) {
+	if (floatCom::eq(x, 0))
+		return a;
+	return {a.x / x, a.y / x};
+}
 
+double operator* (r a, r b) {
+	return a.x * b.x + a.y * b.y;
+}
 
-std::ostream& operator<< (std::ostream& out, r a);
-std::istream& operator>>(std::istream &in, r &a);
+double operator^ (r a, r b) {
+	return a.x*b.y - b.x*a.y;
+}
+
+bool operator|| (r a, r b) {
+	return floatCom::eq(a ^ b, 0);
+}
+bool codirected(r a, r b) {
+	return (a||b) && (a*b > 0);
+}
+bool oppdirected(r a, r b) {
+    return (a || b) && (a*b < 0);
+}
+
+std::ostream& operator<< (std::ostream& out, r a) {
+	out << "(" << a.x << ", " << a.y << ")";
+	return out;
+}
+std::istream& operator>>(std::istream &in, r &a) {
+	in >> a.x >> a.y;
+	return in;
+}
