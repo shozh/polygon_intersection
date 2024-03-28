@@ -3,6 +3,10 @@
 
 #include <r.h>
 
+enum class TripletOrientation {
+	collinear, clockwise, counterclockwise
+};
+
 struct seg {
 	r p, q;
 
@@ -21,6 +25,8 @@ struct line {
 	line(seg s);
 };
 
+
+
 bool IsIntersected(line l, line w);
 r IntersectedPoint(line l, line w);
 
@@ -29,7 +35,11 @@ bool IsIntersected(seg s, seg t);
 r IntersectedPoint(seg s, seg t);
 
 
+TripletOrientation orientation(r p, r q, r t);
 
+bool IsPointOnSeg(seg s, r p);
+bool IsSegOnSeg(seg s, seg t);
+seg SegIntersected(seg s, seg t);
 
 
 

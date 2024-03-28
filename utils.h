@@ -25,9 +25,12 @@ namespace floatCom {
 
 };
 
+inline double max(double a, double b) {
+	return (a > b) ? a : b;
+}
 
-inline double det2(double a, double b, double c, double d) {
-	return a*d - b*c;
+inline double min(double a, double b) {
+	return (a < b) ? a : b;
 }
 
 #endif // __UTILS_H__
