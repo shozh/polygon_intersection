@@ -12,15 +12,14 @@ line::line(r p, r q): a(p.y - q.y), b(q.x - p.x), c(p.x * q.y - q.x * p.y) {}
 line::line(seg s): line(s.p, s.q) {}
 
 bool IsIntersected(line l, line w) {
-	return (l.b * w.b - l.c * w.c) != 0;
+	return (l.a * w.b - w.a * l.b) != 0;
 }
 
 r IntersectedPoint(line l, line w) {
-	double num = l.a * w.a - l.b * w.b;
-	double den = l.b * w.b - l.c * w.c;
+	double den = l.a * w.b - w.a * l.b;
 
-	double x = num / den;
-	double y = (l.c * w.c - l.a * w.a) / den;
+	double x = (l.b * w.c - w.b * l.c) / den;
+	double y = (l.c * w.a - w.c * l.a) / den;
 	return {x, y};
 }
 
@@ -80,8 +79,8 @@ bool IsIntersected(seg s, seg t) {
 
 	r p1 = s.p;
 	r q1 = s.q;
-	r p2 = s.p;
-	r q2 = s.q;
+	r p2 = t.p;
+	r q2 = t.q;
 
 	TripletOrientation o1 = orientation(p1, q1, p2);
 	TripletOrientation o2 = orientation(p1, q1, q2);
@@ -95,6 +94,19 @@ bool IsIntersected(seg s, seg t) {
 }
 
 r IntersectedPoint(seg s, seg t) {
+
+    if (IsPointOnSeg(t, s.p))
+        return s.p;
+
+    if (IsPointOnSeg(t, s.q))
+        return s.q;
+
+    if (IsPointOnSeg(s, t.p))
+        return t.p;
+
+    if (IsPointOnSeg(s, t.q))
+        return t.q;
+
 	line sl = line(s);
 	line st = line(t);
 	return IntersectedPoint(sl, st);

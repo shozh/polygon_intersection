@@ -200,11 +200,11 @@ double ConvexPolygon::area() {
 ConvexPolygon intersect(const ConvexPolygon& T,  const ConvexPolygon& Y) {
     std::unordered_set<r> main_points;
 
-    for (auto tit = ++T.vertices.begin(); tit != T.vertices.end(); ++tit) {
+    for (size_t i = 0; i != T.n; ++i) {
+        for (size_t j = 0; j != Y.n; ++j) {
 
-        for (auto yit = ++Y.vertices.begin(); yit != Y.vertices.end(); ++yit) {
-            seg tseg(*std::prev(tit), *tit);
-            seg yseg(*std::prev(yit), *yit);
+            seg tseg(T.vertices[i], T.vertices[(i+1) % T.n]);
+            seg yseg(Y.vertices[j], Y.vertices[(j+1) % Y.n]);
             if (IsSegOnSeg(tseg, yseg)) {
                 seg res = SegIntersected(tseg, yseg);
                 main_points.insert(res.p);
