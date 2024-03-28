@@ -7,6 +7,10 @@ enum class TripletOrientation {
 	collinear, clockwise, counterclockwise
 };
 
+enum class PointLinePosition {
+	below = -1, on, above
+};
+
 struct seg {
 	r p, q;
 
@@ -23,12 +27,16 @@ struct line {
 	line(r a, r b);
 
 	line(seg s);
+
+	PointLinePosition findPointPosition(r p);
 };
 
 
 
 bool IsIntersected(line l, line w);
 r IntersectedPoint(line l, line w);
+
+
 
 
 bool IsIntersected(seg s, seg t);

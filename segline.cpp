@@ -100,3 +100,14 @@ r IntersectedPoint(seg s, seg t) {
 	line st = line(t);
 	return IntersectedPoint(sl, st);
 }
+
+PointLinePosition line::findPointPosition(r p) {
+	double val = a * p.x + b * p.y + c;
+
+	if (val < 0)
+		return PointLinePosition::below;
+	if (floatCom::eq(val, 0))
+		return PointLinePosition::on;
+	return PointLinePosition::above;
+
+}
