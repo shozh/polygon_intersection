@@ -1,7 +1,20 @@
 #include "convex_polygon.h"
 #include <algorithm>
-#include <set>
+#include <unordered_set>
 #include <cmath>
+
+namespace std {
+    template <>
+    struct hash<r> {
+        size_t operator()(const r& p) const {
+            size_t h1 = std::hash<double>()(p.x);
+            size_t h2 = std::hash<double>()(p.y);
+            return h1 ^ (h2 << 1); // Простое комбинирование хэшей для Point
+        }
+    };
+}
+
+
 
 ConvexPolygon::ConvexPolygon(const ConvexPolygon& other) {
 	vertices = other.vertices;
@@ -131,7 +144,7 @@ ConvexPolygon::ConvexPolygon(std::vector<r>& rs) {
 //ConvexPolygon::ConvexPolygon(std::initializer_list<r> rlist) {}
 
 
-PointPolygonPosition ConvexPolygon::findPointPosition(r p) {
+PointPolygonPosition ConvexPolygon::findPointPosition(r p) const {
 
     // Point case
     if (n == 1) {
@@ -173,7 +186,7 @@ PointPolygonPosition ConvexPolygon::findPointPosition(r p) {
 
     if (o1 != on)
         return PointPolygonPosition::outside;
-    
+
     return PointPolygonPosition::inside;
 }
 
@@ -184,4 +197,34 @@ double ConvexPolygon::area() {
 	return fabs(s) / 2.;
 }
 
-//ConvexPolygon& intersect(const ConvexPolygon& T, const ConvexPolygon& Y);
+ConvexPolygon intersect(const ConvexPolygon& T,  const ConvexPolygon& Y) {
+    std::unordered_set<r> main_points;
+
+    for (auto tit = ++T.vertices.begin(); tit != T.vertices.end(); ++tit) {
+
+        for (auto yit = ++Y.vertices.begin(); yit != Y.vertices.end(); ++yit) {
+            seg tseg(*std::prev(tit), *tit);
+            seg yseg(*std::prev(yit), *yit);
+            if (IsSegOnSeg(tseg, yseg)) {
+                seg res = SegIntersected(tseg, yseg);
+                main_points.insert(res.p);
+                main_points.insert(res.q);
+            }
+            else if (IsIntersected(tseg, yseg))
+                main_points.insert(IntersectedPoint(tseg, yseg));
+        }
+
+    }
+
+    for (r v: T.vertices)
+        if (Y.findPointPosition(v) == PointPolygonPosition::inside)
+            main_points.insert(v);
+
+    for (r v: Y.vertices)
+        if (T.findPointPosition(v) == PointPolygonPosition::inside)
+            main_points.insert(v);
+
+    std::vector<r> vec(main_points.begin(), main_points.end());
+
+    return ConvexPolygon(vec);
+}

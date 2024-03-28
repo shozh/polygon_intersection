@@ -28,6 +28,19 @@ struct line {
 
 	explicit line(seg s);
 
+
+//    PointLinePosition plp = l.findPointPosition(p);
+//    switch (plp) {
+//        case PointLinePosition::above:
+//            std::cout << "above" << "\n";
+//            break;
+//        case PointLinePosition::below:
+//            std::cout << "below" << "\n";
+//            break;
+//        case PointLinePosition::on:
+//            std::cout << "on" << "\n";
+//            break;
+//    }
 	PointLinePosition findPointPosition(r p);
 };
 
@@ -42,7 +55,16 @@ r IntersectedPoint(line l, line w);
 bool IsIntersected(seg s, seg t);
 r IntersectedPoint(seg s, seg t);
 
-
+//switch (o) {
+//    case TripletOrientation::collinear:
+//        std::cout << "collinear" << "\n";
+//        break;
+//    case TripletOrientation::clockwise:
+//        std::cout << "clockwise" << "\n";
+//        break;
+//    case TripletOrientation::counterclockwise:
+//        std::cout << "counterclockwise" << "\n";
+//        break;
 TripletOrientation orientation(r a, r b, r c);
 
 bool IsPointOnSeg(seg s, r p);
