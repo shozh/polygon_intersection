@@ -232,7 +232,8 @@ ConvexPolygon intersect(const ConvexPolygon& T,  const ConvexPolygon& Y) {
     return ConvexPolygon(vec);
 }
 
-void intersects(size_t N, std::vector<ConvexPolygon>& polygons) {
+void intersects(std::vector<ConvexPolygon>& polygons) {
+    size_t N = polygons.size();
     if (N == 0) {
         std::cout << "Нет пересечения!" << "\n";
         return;
@@ -243,12 +244,20 @@ void intersects(size_t N, std::vector<ConvexPolygon>& polygons) {
             std::cout << "Нет пересечения!" << "\n";
             return;
         }
+
+        if (polygons[0].n == 1) {
+            std::cout << "Точка пересечения: " << polygons[0].vertices[0] << "\n";
+            return;
+        }
+
         std::cout << "Точки персечения: ";
         for (r ver: polygons[0].vertices)
             std::cout << ver << "; ";
-        std::cout << ".\n";
+        std::cout << "\n";
         if (polygons[0].n >= 3)
             std::cout << "Площадь пересечения: " << polygons[0].area() << ".\n";
+        if (polygons[0].n == 2)
+            std::cout << "Длина пересечения: " << dist(polygons[0].vertices[0], polygons[0].vertices[1]) << ".\n";
         return;
     }
 
@@ -267,10 +276,17 @@ void intersects(size_t N, std::vector<ConvexPolygon>& polygons) {
         }
     }
 
+    if (intersection.n == 1) {
+        std::cout << "Точка пересечения: " << intersection.vertices[0] << "\n";
+        return;
+    }
+
     std::cout << "Точки персечения: ";
     for (r ver: intersection.vertices)
         std::cout << ver << "; ";
-    std::cout << ".\n";
+    std::cout << "\n";
     if (intersection.n >= 3)
         std::cout << "Площадь пересечения: " << intersection.area() << ".\n";
+    if (intersection.n == 2)
+        std::cout << "Длина пересечения: " << dist(intersection.vertices[0], intersection.vertices[1]) << ".\n";
 }

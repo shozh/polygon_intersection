@@ -8,26 +8,12 @@ using namespace std;
 
 int main() {
 
-//   vector<r> vec { {2, 1}, {9, 10}, {4, 1}, {1, 3}, {4, 9}, {1, 6}, {10, 3}, {10, 7} };
-//
-//    ConvexPolygon cp(vec);
-//
-//   for (auto ver: cp.vertices)
-//       cout << ver << " ";
-//   cout << "\n";
+    ConvexPolygon A = {{-2, 0}, {0, 2}, {-2, 3}};
+    ConvexPolygon B = {{0, 0}, {2, 0}, {0, 2}};
+    ConvexPolygon C = {{0, 2}, {0, 4}, {2, 4}};
 
+    vector<ConvexPolygon> v = {A, B, C};
 
-
-    ConvexPolygon T =  {{0, -2}, {3, 1}, {-3, 1}};
-    ConvexPolygon Y = {{-1, -1}, {1, -1}, {0, 3}};
-
-    ConvexPolygon Z = intersect(T, Y);
-
-   for (auto ver: Z.vertices)
-       cout << ver << " ";
-   cout << "\n";
-
-   cout << Z.area() << "\n";
-
+    intersects(v);
 	return 0;
 }

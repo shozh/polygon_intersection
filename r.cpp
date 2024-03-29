@@ -1,6 +1,7 @@
 #include "r.h"
 #include "utils.h"
 #include <iostream>
+#include <iomanip>
 #include <cmath>
 
 
@@ -89,10 +90,10 @@ bool oppdirected(r a, r b) {
 }
 
 std::ostream& operator<< (std::ostream& out, r a) {
-	out << "(" << a.x << ", " << a.y << ")";
+	out << std::setprecision(4) << "(" << a.x << ", " << a.y << ")";
 	return out;
 }
-std::istream& operator>>(std::istream &in, r &a) {
+std::istream& operator>> (std::istream &in, r &a) {
 	in >> a.x >> a.y;
 	return in;
 }
