@@ -14,14 +14,12 @@ namespace std {
     };
 }
 
-
-
 ConvexPolygon::ConvexPolygon(const ConvexPolygon& other) {
 	vertices = other.vertices;
 	n = other.n;
 }
 
-ConvexPolygon::ConvexPolygon(std::vector<r>& rs) {
+void ConvexPolygon::SetPoints(std::vector<r>& rs) {
 
 	sort(rs.begin(), rs.end());
 
@@ -140,9 +138,14 @@ ConvexPolygon::ConvexPolygon(std::vector<r>& rs) {
 	n = order.size();
 }
 
+ConvexPolygon::ConvexPolygon(std::vector<r>& rs) {
+    SetPoints(rs);
+}
 
-//ConvexPolygon::ConvexPolygon(std::initializer_list<r> rlist) {}
-
+ConvexPolygon::ConvexPolygon(std::initializer_list<r> rlist) {
+    std::vector<r> vec(rlist.begin(), rlist.end());
+    SetPoints(vec);
+}
 
 PointPolygonPosition ConvexPolygon::findPointPosition(r p) const {
 
@@ -227,4 +230,47 @@ ConvexPolygon intersect(const ConvexPolygon& T,  const ConvexPolygon& Y) {
     std::vector<r> vec(main_points.begin(), main_points.end());
 
     return ConvexPolygon(vec);
+}
+
+void intersects(size_t N, std::vector<ConvexPolygon>& polygons) {
+    if (N == 0) {
+        std::cout << "Нет пересечения!" << "\n";
+        return;
+    }
+
+    if (N == 1) {
+        if (polygons[0].n == 0) {
+            std::cout << "Нет пересечения!" << "\n";
+            return;
+        }
+        std::cout << "Точки персечения: ";
+        for (r ver: polygons[0].vertices)
+            std::cout << ver << "; ";
+        std::cout << ".\n";
+        if (polygons[0].n >= 3)
+            std::cout << "Площадь пересечения: " << polygons[0].area() << ".\n";
+        return;
+    }
+
+    ConvexPolygon intersection = intersect(polygons[0], polygons[1]);
+
+    if (intersection.n == 0) {
+        std::cout << "Нет пересечения!" << "\n";
+        return;
+    }
+
+    for (size_t i = 2; i != N; ++i) {
+        intersection = intersect(intersection, polygons[i]);
+        if (intersection.n == 0) {
+            std::cout << "Нет пересечения!" << "\n";
+            return;
+        }
+    }
+
+    std::cout << "Точки персечения: ";
+    for (r ver: intersection.vertices)
+        std::cout << ver << "; ";
+    std::cout << ".\n";
+    if (intersection.n >= 3)
+        std::cout << "Площадь пересечения: " << intersection.area() << ".\n";
 }

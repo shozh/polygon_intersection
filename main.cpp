@@ -17,19 +17,17 @@ int main() {
 //   cout << "\n";
 
 
-    r A(1, 0), B(0, 2), C(5, 2);
-    r a(4, 0), b(1, 3), c(6, 4);
 
-    vector<r> v1 = {A, B, C};
-    vector<r> v2 = {a, b, c};
-
-    ConvexPolygon T(v1), Y(v2);
+    ConvexPolygon T =  {{0, -2}, {3, 1}, {-3, 1}};
+    ConvexPolygon Y = {{-1, -1}, {1, -1}, {0, 3}};
 
     ConvexPolygon Z = intersect(T, Y);
 
    for (auto ver: Z.vertices)
        cout << ver << " ";
    cout << "\n";
+
+   cout << Z.area() << "\n";
 
 	return 0;
 }

@@ -27,9 +27,10 @@ struct ConvexPolygon {
 	size_t n;
 	std::vector<r> vertices;
 
+    void SetPoints(std::vector<r>& rs);
 	ConvexPolygon(const ConvexPolygon& other);
 	ConvexPolygon(std::vector<r>& rs);
-	//ConvexPolygon(std::initializer_list<r> rlist);
+	ConvexPolygon(std::initializer_list<r> rlist);
 
 	PointPolygonPosition findPointPosition(r p) const;
 
@@ -38,5 +39,6 @@ struct ConvexPolygon {
 
 ConvexPolygon intersect(const ConvexPolygon& T, const ConvexPolygon& Y);
 
+void intersects(size_t N, std::vector<ConvexPolygon>& polygons);
 
 #endif // __CONVEX_POLYGON_H__
